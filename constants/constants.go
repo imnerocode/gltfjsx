@@ -1,5 +1,5 @@
 package constants
 
 const (
-	PATH_FILE = "D:/Art/Models/Basic/Ali.glb"
+	PATH_FILE = "./models/Ali.glb"
 )
