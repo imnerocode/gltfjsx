@@ -59,10 +59,10 @@ func FormatToJSX() (string, error) {
 		meshData.Material = mesh.Primitives[0].Material
 		meshData.Indices = mesh.Primitives[0].Indices
 
-		// Procesar atributos
+		
 		attributes := make(map[string]string)
 		for key := range mesh.Primitives[0].Attributes {
-			attributes[key] = "buffer" // Aquí puedes mapear a valores reales
+			attributes[key] = "buffer" 
 		}
 		meshData.Attributes = attributes
 
