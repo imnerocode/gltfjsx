@@ -21,14 +21,14 @@ func ParseGLBFromFile(pathFile string) *vo.ParseResponse {
 	return &vo.ParseResponse{Document: doc, IsParsed: true, Err: nil}
 }
 
-func FormatToJSX() (string, error) {
+func FormatToJSX() error {
 	doc := ParseGLBFromFile(constants.PATH_FILE)
 	if doc.Err != nil {
-		return "", doc.Err
+		return doc.Err
 	}
 
 	if !doc.IsParsed {
-		return "", helpers.ErrParse
+		return helpers.ErrParse
 	}
 
 	templateJsx := templates.TemplateJSX()
@@ -36,7 +36,7 @@ func FormatToJSX() (string, error) {
 	tmpl, err := template.New("test").Parse(templateJsx)
 
 	if err != nil {
-		return "", err
+		return err
 	}
 	var docData vo.DocumentData
 
@@ -62,7 +62,7 @@ func FormatToJSX() (string, error) {
 		// Procesar atributos
 		attributes := make(map[string]string)
 		for key := range mesh.Primitives[0].Attributes {
-			attributes[key] = "buffer" // Aquí puedes mapear a valores reales
+			attributes[key] = "buffer"
 		}
 		meshData.Attributes = attributes
 
@@ -70,7 +70,7 @@ func FormatToJSX() (string, error) {
 	}
 	err = tmpl.Execute(os.Stdout, docData)
 	if err != nil {
-		return "", err
+		return err
 	}
-	return "", nil
+	return nil
 }
