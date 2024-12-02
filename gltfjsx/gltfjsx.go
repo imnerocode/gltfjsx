@@ -20,6 +20,15 @@ func ParseGLBFromFile(pathFile string) *vo.ParseResponse {
 	return &vo.ParseResponse{Document: doc, IsParsed: true, Err: nil}
 }
 
+func ConvertToFlatArray(arr [][]float32) []float32 {
+	var arrFlat []float32
+
+	for _, value := range arr {
+		arrFlat = append(arrFlat, value...)
+	}
+	return arrFlat
+}
+
 func FormatToJSX() error {
 	pathFile := constants.PATH_FILE
 	parseData := ParseGLBFromFile(pathFile)
