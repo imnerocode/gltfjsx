@@ -9,7 +9,7 @@ type ParseResponse struct {
 }
 
 type DocumentData struct {
-	GeometryName string
+	GeometryName []string
 	Nodes        []NodeData
 	Meshes       []MeshData
 }
@@ -22,8 +22,13 @@ type NodeData struct {
 }
 
 type MeshData struct {
-	Name       string
 	Material   *int
-	Indices    *int
-	Attributes map[string]string
+	Indices    any
+	Attributes []AttributesData
+}
+
+type AttributesData struct {
+	Normal   [][3]float32
+	Position [][3]float32
+	TexCoord [][2]float32
 }
