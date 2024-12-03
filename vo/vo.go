@@ -16,7 +16,7 @@ type DocumentData struct {
 type MeshData struct {
 	Material   *int
 	Indices    any
-	Attributes []AttributesData
+	Attributes AttributesData
 	Node       []NodeData
 }
 type NodeData struct {

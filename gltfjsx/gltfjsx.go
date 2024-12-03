@@ -20,11 +20,15 @@ func ParseGLBFromFile(pathFile string) *vo.ParseResponse {
 	return &vo.ParseResponse{Document: doc, IsParsed: true, Err: nil}
 }
 
-func ConvertToFlatArray(arr [][]float32) []float32 {
+func ConvertToFlatArray(arr [][3]float32) []float32 {
+	var arrUni [][]float32
 	var arrFlat []float32
 
 	for _, value := range arr {
-		arrFlat = append(arrFlat, value...)
+		arrUni = append(arrUni, value[:])
+	}
+	for _, arr := range arrUni {
+		arrFlat = append(arrFlat, arr...)
 	}
 	return arrFlat
 }
@@ -87,7 +91,7 @@ func FormatToJSX() error {
 				}
 
 			}
-			meshData.Attributes = append(meshData.Attributes, attributesData)
+			meshData.Attributes = attributesData
 		}
 		documentData.Meshes = append(documentData.Meshes, meshData)
 	}
@@ -95,6 +99,9 @@ func FormatToJSX() error {
 	fmt.Printf("Mesh name: %s\n", documentData.GeometryName[0])
 	fmt.Printf("Mesh Indices: %+v\n", documentData.Meshes[0].Indices)
 	fmt.Printf("Mesh Material: %+v\n", documentData.Meshes[0].Material)
-	fmt.Printf("Mesh Attributes: %+v\n", documentData.Meshes[0].Attributes)
+	vertexPosition := ConvertToFlatArray(documentData.Meshes[0].Attributes.Position)
+	fmt.Printf("Position Vertex: %+v\n", vertexPosition)
+	normal := ConvertToFlatArray(documentData.Meshes[0].Attributes.Normal)
+	fmt.Printf("Normals: %+v\n", normal)
 	return nil
 }
