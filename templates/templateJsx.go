@@ -1,43 +1,42 @@
 package templates
 
 func TemplateJSX() string {
-	templateJsx := `
+	return `
 	import React from 'react';
 
-	export default function Model(){
+	export default function Model() {
+		const attributesPosition = {{ .Position }};
+		const attributesNormal = {{ .Normal }};
+		const attributesIndices = {{ .Indices }};
+
+		const countPosition = attributesPosition.length / 3;
+		const countNormal = attributesNormal.length / 3;
+
 		return (
 			<group>
-				{{range .Meshes}}
-				<mesh
-					rotation={[{{.Node.Rotation 0}}, {{.Node.Rotation 1}}, {{.Node.Rotation 2}}]}
-					scale={[{{.Node.Scale 0}}, {{.Node.Scale 1}}, {{.Node.Scale 2}}]}
-					position={[{{.Node.Position 0}}, {{.Node.Position 1}}, {{.Node.Position 2}}]}
-				>
+				<mesh>
 					<bufferGeometry>
 						<bufferAttribute
 							attach="attributes-position"
-							array={new Float32Array({{.Attributes.Position}})}
-							count={{len .Attributes.Position}}
+							array={new Float32Array(attributesPosition)}
+							count={countPosition}
 							itemSize={3}
 						/>
 						<bufferAttribute
 							attach="attributes-normal"
-							array={new Float32Array({{.Attributes.Normal}})}
-							count={{len .Attributes.Normal}}
+							array={new Float32Array(attributesNormal)}
+							count={countNormal}
 							itemSize={3}
 						/>
-						<bufferAttribute
-							attach="attributes-uv"
-							array={new Float32Array({{.Attributes.TexCoord}})}
-							count={{len .Attributes.TexCoord}}
-							itemSize={2}
+						<index
+							attach="index"
+							array={new Uint16Array(attributesIndices)}
 						/>
 					</bufferGeometry>
+					<meshStandardMaterial color="orange" />
 				</mesh>
-				{{end}}
 			</group>
-		)
+		);
 	}
 	`
-	return templateJsx
 }

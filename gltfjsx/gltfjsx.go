@@ -1,10 +1,12 @@
 package gltfjsx
 
 import (
-	"fmt"
+	"os"
+	"text/template"
 
 	"github.com/imnerocode/gltfjsx/constants"
 	"github.com/imnerocode/gltfjsx/helpers"
+	"github.com/imnerocode/gltfjsx/templates"
 	"github.com/imnerocode/gltfjsx/vo"
 	"github.com/qmuntal/gltf"
 	"github.com/qmuntal/gltf/modeler"
@@ -96,12 +98,25 @@ func FormatToJSX() error {
 		documentData.Meshes = append(documentData.Meshes, meshData)
 	}
 
-	fmt.Printf("Mesh name: %s\n", documentData.GeometryName[0])
-	fmt.Printf("Mesh Indices: %+v\n", documentData.Meshes[0].Indices)
-	fmt.Printf("Mesh Material: %+v\n", documentData.Meshes[0].Material)
+	documentData.Meshes[0].Attributes.Indices = documentData.Meshes[0].Indices
+
 	vertexPosition := ConvertToFlatArray(documentData.Meshes[0].Attributes.Position)
-	fmt.Printf("Position Vertex: %+v\n", vertexPosition)
+
 	normal := ConvertToFlatArray(documentData.Meshes[0].Attributes.Normal)
-	fmt.Printf("Normals: %+v\n", normal)
+
+	jsxFile := templates.TemplateJSX()
+	tmpl, err := template.New("model").Parse(jsxFile)
+	if err != nil {
+		return err
+	}
+	var attr vo.AttributesMain
+
+	attr.Indices = documentData.Meshes[0].Attributes.Indices
+	attr.Normal = normal
+	attr.Position = vertexPosition
+	err = tmpl.Execute(os.Stdout, attr)
+	if err != nil {
+		return err
+	}
 	return nil
 }

@@ -30,4 +30,11 @@ type AttributesData struct {
 	Normal   [][3]float32
 	Position [][3]float32
 	TexCoord [][2]float32
+	Indices  any
+}
+type AttributesMain struct {
+	Normal   []float32
+	Position []float32
+	TexCoord [][2]float32
+	Indices  any
 }
